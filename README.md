@@ -30,7 +30,7 @@ Below are sample pictures from the dataset:
 ### Access
 To reduce training cost and duration, a subset of the Amazon Bin Image Dataset has been used (approximately 2% of the full dataset). This is done by means of the AWS CLI in notebook 'sagemaker.ipynb'. The data has then been divided into 3 folders in Amazon S3: train, valid and test. The correct policies have been added to the execution role of SageMaker to ensure SageMaker can access S3 to carry out the training.
 
-<img src="screenshots/screenshot1-S3.png" width=250 height=250>
+<img src="screenshots/screenshot1-S3.png" width=650>
 
 Note: the subset was split in the following way: training (90%), validation (5%) and testing (5%). The data split was done manually in Amazon S3 by calculating how many files should be in each
 directory and then deleting any unwanted files. This could also have been done by means of an algorithm. However, it was not possible to create an effective algorithm for this during the project.  
@@ -59,11 +59,11 @@ epochs = 5
 
 Below is a screenshot of a training session with resnet50:
 
-<img src="screenshots/screenshot2-training-resnet50.png" width=500 height=500>
+<img src="screenshots/screenshot2-training-resnet50.png" width=650>
 
 Below is a screenshot of a training session with resnet101:
 
-<img src="screenshots/screenshot3-training-resnet101.png" width=500 height=500>
+<img src="screenshots/screenshot3-training-resnet101.png" width=650>
 
 The test accuracy of resnet101 (34%) is slightly higher compared to resnet50 (29%). This is likely due to the fact that resnet101 has a deeper architecture. In the sections below, training will be carried out with resnet101. Furthermore, hyperparameter tuning will be used to achieve an even higher test accuracy.
 
@@ -104,7 +104,7 @@ epochs: 13
 
 See screenshot for hyperparameter tuning:
 
-<img src="screenshots/screenshot4-hyperparameter-tuning.png" width=500 height=500>
+<img src="screenshots/screenshot4-hyperparameter-tuning.png" width=650>
 
 &nbsp;
 
@@ -122,27 +122,23 @@ pass profiler configuration to estimator and configure hook in the training scri
 ### Results
 Below is a screenshot for training using the hyperparameters obtained from the tuning and including debugging/profiling:
 
-<img src="screenshots/screenshot5-training-after-hyperparameter-tuning.png" width=400 height=400>
+<img src="screenshots/screenshot5-training-after-hyperparameter-tuning.png" width=650>
 
 As can be seen, the test accuracy is 57%, which is higher than the previous run. There seems to be some overfitting, as the training and validation accuracy are quite far
 apart. The overfitting could be due to the dataset being too small.  Also, note that spot instances have been used to reduce the training costs.
 
 Below is a screenshot of CPU/GPU utilization obtained from the profiling. To speed up the training, the model and dataloaders in PyTorch have been offloaded to the GPU (CUDA) in the EC2 instance. This shows up clearly in the graph. 
 
-<img src="screenshots/screenshot6-cpu-gpu-utilization.png" width=400 height=400>
+<img src="screenshots/screenshot6-cpu-gpu-utilization.png" width=650>
 
 &nbsp;
 
 ## Model Deployment
 A *predictor* (endpoint) is created using the deploy() method on a Pytorch instance of the model. An test image (.jpg file) is then passed to the endpoint, in this case an image of a bin. A response is generated using *predictor.predict()*. The response returns a vector of probabilities. The index with the highest positive value indicates the correct label. In this case, the index is 1 (indexing starts at zero). In the bin image dataset stored in S3, index 1 corresponds to folder 2/ i.e. bin images with two objects. Therefore, the inference result is correct!   
 
-Screenshot for creation of active endpoint in SageMaker:
-
-<img src="screenshots/screenshot8-deploy-to-endpoint.png" width=650 height=650>
-
 Screenshot for inference using sample bin image in the test directory:
 
-<img src="screenshots/screenshot9-inference.png" width=400 height=400>
+<img src="screenshots/screenshot9-inference.png" width=650>
 
 &nbsp;
 
