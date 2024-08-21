@@ -30,7 +30,7 @@ Below are sample pictures from the dataset:
 ### Access
 To reduce training cost and duration, a subset of the Amazon Bin Image Dataset has been used (approximately 2% of the full dataset). This is done by means of the AWS CLI in notebook 'sagemaker.ipynb'. The data has then been divided into 3 folders in Amazon S3: train, valid and test. The correct policies have been added to the execution role of SageMaker to ensure SageMaker can access S3 to carry out the training.
 
-<img src="screenshots/screenshot1-S3.png" width=650>
+<img src="screenshots/screenshot1-S3.png" width=400>
 
 Note: the subset was split in the following way: training (90%), validation (5%) and testing (5%). The data split was done manually in Amazon S3 by calculating how many files should be in each
 directory and then deleting any unwanted files. This could also have been done by means of an algorithm. However, it was not possible to create an effective algorithm for this during the project.  
@@ -138,7 +138,7 @@ A *predictor* (endpoint) is created using the deploy() method on a Pytorch insta
 
 Screenshot for inference using sample bin image in the test directory:
 
-<img src="screenshots/screenshot9-inference.png" width=650>
+<img src="screenshots/screenshot9-inference.png" width=500>
 
 &nbsp;
 
